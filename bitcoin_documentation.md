@@ -1,10 +1,10 @@
 # Bitcoin Documentation
 
 ## Table of  Contents
-1. [Compile Bitcoin Core](#Compile Bitcoin Core)
+1. [Compile Bitcoin Core](#compile)
 2. [Setup a Regtest Network on Local Machine](#Setup a Regtest Network on Local Machine)
 
-## Compile Bitcoin Core <a name="Compile Bitcoin Core"></a>
+## Compile Bitcoin Core <a name="compile"></a>
 ```bash
 $ cd bitcoin
 $ git checkout v0.16.0
