@@ -2,7 +2,7 @@
 
 ## Table of  Contents
 1. [Compile Bitcoin Core](#compile)
-2. [Setup a Regtest Network on Local Machine](#Setup a Regtest Network on Local Machine)
+2. [Setup a Regtest Network on Local Machine](#setup-regtest-network)
 
 ## Compile Bitcoin Core <a name="compile"></a>
 ```bash
@@ -14,7 +14,7 @@ $ make
 ```
 see [Rich Apodaca's post](https://bitzuma.com/posts/compile-bitcoin-core-from-source-on-ubuntu/).
 
-## Setup a Regtest Network on Local Machine <a name="Setup a Regtest Network on Local Machine" ></a>
+## Setup a Regtest Network on Local Machine <a name="setup-regtest-network" ></a>
 ### 1. Edit bitcoin.conf
 
 Creater two folders (`datadir0`, `datadir1`), and include a `bitcoin.conf` file in each of the two folders.
