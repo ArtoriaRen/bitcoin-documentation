@@ -49,8 +49,8 @@ $tail ./datadir0/regtest/debug.log
 see [tdrusk's post](https://www.yours.org/content/connecting-multiple-bitcoin-core-nodes-in-regtest-5fdc9c47528b).
 
 ## Bitcoin Core Source Code
-### 1. `net\_processing.cpp`
-####`ProcessMessage()`
+### 1. `net_processing.cpp`
+#### `ProcessMessage()`
 Log network message (type, sender) received from peers.
 
 ### 2. `net.h`
