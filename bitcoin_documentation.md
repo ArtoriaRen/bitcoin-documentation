@@ -11,8 +11,11 @@ $ git checkout v0.16.0
 $ ./autogen.sh
 $ ./configure CPPFLAGS="-I${BDB_PREFIX}/include/ -O2" LDFLAGS="-L${BDB_PREFIX}/lib/" --with-gui
 $ make
+$ make install
 ```
 see [Rich Apodaca's post](https://bitzuma.com/posts/compile-bitcoin-core-from-source-on-ubuntu/).
+
+The final install is necessary if you want to start bitcoind regardless of directory. Otherwise, you can change path to bitcoin/src and start bitcoind therei (or give a full path when you are at another directory).
 
 ## Setup a Regtest Network on Local Machine <a name="setup-regtest-network" ></a>
 ### 1. Edit bitcoin.conf
