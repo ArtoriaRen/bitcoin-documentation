@@ -52,33 +52,82 @@ $tail ./datadir0/regtest/debug.log
 see [tdrusk's post](https://www.yours.org/content/connecting-multiple-bitcoin-core-nodes-in-regtest-5fdc9c47528b).
 
 ## Bitcoin Core Source Code
-### 1. `net_processing.cpp`
-#### `ProcessMessage()`
-Log network message (type, sender) received from peers.
-
-### 2. `net.h`
-#### `class CNode`
-Information about a peer.
+### `block.h`
+#### `class CBlock : public CBlockHeader`
+Has the following public field to access transactions.
 ```cpp
-    public: const CAddress addr;
+public:
+    std::vector<CTransactionRef> vtx;
 ```
 
-### 3. `netaddress.h`
-#### `class CNetAddr`
-IP address (IPv6, or IPv4 using mapped IPv6 range (::FFFF:0:0/96))
-```cpp
-    protected: unsigned char ip[16]; // in network byte order
-```
+### `chain.h`
+####`class CBlockIndex`
+Can access block header info, but not directly to transactions.
 
 #### `class CService : public CNetAddr`
 A combination of a network address (CNetAddr) and a (TCP) port.
 ```cpp
     protected: unsigned short port;
 ```
-### 4. `protocol.h`
+
+###  `net.h`
+#### `class CNode`
+Information about a peer.
+```cpp
+    public: const CAddress addr;
+```
+
+###  `netaddress.h`
+#### `class CNetAddr`
+IP address (IPv6, or IPv4 using mapped IPv6 range (::FFFF:0:0/96))
+```cpp
+    protected: unsigned char ip[16]; // in network byte order
+```
+
+###  `net_processing.cpp`
+#### `ProcessMessage()`
+Log network message (type, sender) received from peers.
+
+### `primitives/transaction.h`
+#### `class CTxOut`
+Has two public field:
+```cpp
+    CAmount nValue;
+    CScript scriptPubKey;
+```
+#### `class CTxIn`
+
+###  `protocol.h`
 #### `class CAddress : public CService`
 A CService with information about it as peer.
 
-### 5. `validation.cpp`
+### `rpc/blockchain.cpp`
+Has functions to handle blockchain-related cli commands, e.g., getblockcount.
+
+
+### `rpc/client.cpp`
+Has a list of most cli commands.
+
+### `rpc/mining.h`
+Has a function `generateBlocks` and can check PoW target.
+
+### `rpc/net.cpp`
+Has functions to handle network-info-related cli commands.
+
+### `rpc/rawtransaction.cpp`
+Has functions to handle transaction-related cli commands.
+
+### `rpc/register.h`
+Register all cli commands.
+
+### `rpc/util.h`
+Has three functions to convert public keys (used by `wallet/rpcwallet.cpp`).
+```cpp
+    CPubKey HexToPubKey(const std::string& hex_in);
+    CPubKey AddrToPubKey(CKeyStore* const keystore, const std::string& addr_in);
+    CScript CreateMultisigRedeemscript(const int required, const std::vector<CPubKey>& pubkeys);
+```
+
+###  `validation.cpp`
 #### `UpdateTip()`
 Check warning conditions and do some notifications on new chain tip set.
