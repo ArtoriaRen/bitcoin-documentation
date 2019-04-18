@@ -3,7 +3,8 @@
 ## Table of  Contents
 1. [Compile Bitcoin Core](#compile)
 2. [Setup a Regtest Network on Local Machine](#setup-regtest-network)
-
+3. [Bitcoin Core Source Code Walkthrough](#code-walkthrough)
+4. [Add Miner to a Regtest Network](#miner)
 ## Compile Bitcoin Core <a name="compile"></a>
 ```bash
 $ cd bitcoin
@@ -20,7 +21,7 @@ The final install is necessary if you want to start bitcoind regardless of direc
 ## Setup a Regtest Network on Local Machine <a name="setup-regtest-network" ></a>
 ### 1. Edit bitcoin.conf
 
-Creater two folders (`datadir0`, `datadir1`), and include a `bitcoin.conf` file in each of the two folders.
+Creater a folder `datadirConfig` under the bitcoin source code root folder to store blockchain info for nodes. Create two subfolders (`datadirConfig/datadir0`, `datadirConfi/gdatadir1`), and include a `bitcoin.conf` file in each of the two subfolders.
 Add to `datadir0/bitcoin.conf`:
 
 <!-- TODO: add a link to sample bitcoin.conf on my github. make sure the bitcoin.conf do not include sensetive info.
@@ -39,10 +40,10 @@ Add to `datadir1/bitcoin.conf`:
 
 
 ### 2. Start a Two-node Network
-Open two terminal windows, and type in each window one following line:
+Open two terminal windows, redirect to the folder `datadirConfig` and type in each window one following line:
 ```bash
-$bitcoind -datadir=./datadir0 -debug=1
-$bitcoind -datadir=./datadir1 -debug=1
+$../src/bitcoind -datadir=./datadir0 -debug=1
+$../src/bitcoind -datadir=./datadir1 -debug=1
 ```
 `-debug=1` enables debug info to be logged. To check latest debug info:
 ```bash
@@ -51,7 +52,7 @@ $tail ./datadir0/regtest/debug.log
 
 see [tdrusk's post](https://www.yours.org/content/connecting-multiple-bitcoin-core-nodes-in-regtest-5fdc9c47528b).
 
-## Bitcoin Core Source Code
+## Bitcoin Core Source Code <a name="code-walkthrough"></a>
 ### `block.h`
 #### `class CBlock : public CBlockHeader`
 Has the following public field to access transactions.
@@ -149,3 +150,58 @@ Check warning conditions and do some notifications on new chain tip set.
 ======================
 # Hash 
 `block.h::CBlockHeader::GetHash()` ---> `hash.h::SerializeHash()` ---> `hash.h::CHashWriter::GetHash()` ---> `hash.h::CHash256::Finalize()`.
+
+## Add Miner to a Regtest Network <a name="miner"></a>
+1. download the  Bitcoin CPU miner `https://github.com/pooler/cpuminer`
+- Download a release version by clicking the `Downloads` link, which bring you to SOURCEFORGE website. Version 2.5.0 works on Mac OS High Sierra.
+- Unzip the file, redirect to the root dir of cup-miner, compile it with commands:
+```bash
+./nomacro.pl
+./configure CFLAGS="-O3"
+make
+``` 
+
+2. run a bitcoind instance.
+3. check mining info with 
+```bash
+$../src/bitcoin-cli -datadir=datadir0 getmininginfo
+```
+The output should be like
+```json
+{
+  "blocks": 109,
+  "currentblockweight": 4000,
+  "currentblocktx": 0,
+  "difficulty": 4.656542373906925e-10,
+  "networkhashps": 8.41984596316665e-07,
+  "pooledtx": 0,
+  "chain": "regtest",
+  "warnings": ""
+}
+```
+At the beginning, mining difficulty and network hash powe are extremely low.
+By default, mining difficulty is set to be not retargetable. To change it to be retargetable, open the file `src/chainparams.cpp` and set the value of the boolean variable `consensus.fPowNoRetargeting` at line 289 to `false`.
+
+Check the balance of an account with 
+```bash
+../src/bitcoin-cli -datadir=datadir0 listaccounts
+```
+Check the address of the default with
+```bash
+../src/bitcoin-cli -datadir=node0 getaccountaddress ""
+```
+The output of my instance is 
+```bash
+2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF
+```
+The address will be used to receive payoff during mining.
+
+4. run miner process
+Change dir to the root of cpu-miner, then start a  miner process:
+```bash
+./minerd --url=127.0.0.1:8331 -a=SHA-256d --user=l27ren --pass=UofW2016  --debug --coinbase-addr=2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF
+```
+Check the balance again, and you should see an increse. 
+Check mining info again, and you should find the `networkhashps` has increased. 
+Reference to [Niraj Blog](http://nirajkr.com/bitcoin/solo-cpu-mining-for-bitcoin-in-regtest-mode/)
+
