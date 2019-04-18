@@ -197,11 +197,11 @@ The output of my instance is
 The address will be used to receive payoff during mining.
 
 4. run miner process
-Change dir to the root of cpu-miner, then start a  miner process:
+Change dir to the root of cpu-miner, then start a  miner process with only one thread:
 ```bash
-./minerd --url=127.0.0.1:8331 -a=SHA-256d --user=l27ren --pass=UofW2016  --debug --coinbase-addr=2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF
+./minerd --url=127.0.0.1:8331  --user=l27ren --pass=UofW2016  --debug --coinbase-addr=2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF -a sha256d -t 1
 ```
-Check the balance again, and you should see an increse. 
+Check the balance again, and you should see an increase. 
 Check mining info again, and you should find the `networkhashps` has increased. 
 Reference to [Niraj Blog](http://nirajkr.com/bitcoin/solo-cpu-mining-for-bitcoin-in-regtest-mode/)
 
