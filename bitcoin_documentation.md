@@ -104,6 +104,11 @@ A CService with information about it as peer.
 ### `rpc/blockchain.cpp`
 Has functions to handle blockchain-related cli commands, e.g., getblockcount.
 
+`getblock` function can return tx info of this block.
+```cpp
+	UniValue getblock(const JSONRPCRequest& request)
+```
+
 
 ### `rpc/client.cpp`
 Has a list of most cli commands.
@@ -127,7 +132,20 @@ Has three functions to convert public keys (used by `wallet/rpcwallet.cpp`).
     CPubKey AddrToPubKey(CKeyStore* const keystore, const std::string& addr_in);
     CScript CreateMultisigRedeemscript(const int required, const std::vector<CPubKey>& pubkeys);
 ```
+### `validation.h`
+`mapBlockIndex` map block hashes to block index pointers, which has pretty much all block header info.
+```cpp
+	typedef std::unordered_map<uint256, CBlockIndex*, BlockHasher> BlockMap;
+	extern BlockMap& mapBlockIndex;
+```
 
 ###  `validation.cpp`
 #### `UpdateTip()`
+#### `ReadBlockFromDisk()`
+Given a `CBlockIndex*`, Return corresponding block info (include all tx) by reading from disk and store the result in an `CBlock` object passed in by reference.
+
 Check warning conditions and do some notifications on new chain tip set.
+
+======================
+# Hash 
+`block.h::CBlockHeader::GetHash()` ---> `hash.h::SerializeHash()` ---> `hash.h::CHashWriter::GetHash()` ---> `hash.h::CHash256::Finalize()`.
