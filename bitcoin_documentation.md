@@ -201,6 +201,7 @@ Change dir to the root of cpu-miner, then start a  miner process with only one t
 ```bash
 ./minerd --url=127.0.0.1:8331  --user=l27ren --pass=UofW2016  --debug --coinbase-addr=2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF -a sha256d -t 1
 ```
+Note that `cpuminer` require the `bitcoind` to connect to at least one peer. Otherwise `cpuminer`  will report http error 500, and `bitcoind debug.log` will report `tor: Error connecting to Tor contril socket; tor: Not connected to Tor control port 127.0.0.1:9501, ...` 
 Check the balance again, and you should see an increase. 
 Check mining info again, and you should find the `networkhashps` has increased. 
 Reference to [Niraj Blog](http://nirajkr.com/bitcoin/solo-cpu-mining-for-bitcoin-in-regtest-mode/)
