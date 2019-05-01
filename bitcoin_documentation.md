@@ -14,6 +14,8 @@ $ ./configure CPPFLAGS="-I${BDB_PREFIX}/include/ -O2" LDFLAGS="-L${BDB_PREFIX}/l
 $ make
 $ make install
 ```
+If GUI is not needed, add `--without-gui` to the `configure` command.
+
 see [Rich Apodaca's post](https://bitzuma.com/posts/compile-bitcoin-core-from-source-on-ubuntu/).
 
 The final install is necessary if you want to start bitcoind regardless of directory. Otherwise, you can change path to bitcoin/src and start bitcoind therei (or give a full path when you are at another directory).
