@@ -149,8 +149,7 @@ Given a `CBlockIndex*`, Return corresponding block info (include all tx) by read
 
 Check warning conditions and do some notifications on new chain tip set.
 
-======================
-# Hash 
+### Block header hash 
 `block.h::CBlockHeader::GetHash()` ---> `hash.h::SerializeHash()` ---> `hash.h::CHashWriter::GetHash()` ---> `hash.h::CHash256::Finalize()`.
 
 ## Add Miner to a Regtest Network <a name="miner"></a>
@@ -162,6 +161,15 @@ Check warning conditions and do some notifications on new chain tip set.
 ./configure CFLAGS="-O3"
 make
 ``` 
+
+On Ubuntu, you can directly clone the github repository and compile the source code with:
+```bash
+sudo apt install libcurl4-openssl-dev # install libcurl4 if it is not already installed.
+./nomacro.pl
+./autogen.sh
+./configure CFLAGS="-O3"
+make
+```
 
 2. run a bitcoind instance.
 3. check mining info with 
