@@ -152,6 +152,18 @@ Check warning conditions and do some notifications on new chain tip set.
 ### Block header hash 
 `block.h::CBlockHeader::GetHash()` ---> `hash.h::SerializeHash()` ---> `hash.h::CHashWriter::GetHash()` ---> `hash.h::CHash256::Finalize()`.
 
+
+### Difficulty Adjust Interval
+In `consensus/params.h`,
+```c
+int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
+```
+The two parameters can be set in `src/chainparams.cpp`.
+
+## Test
+### `src/pow_tests.cpp`
+test pow.
+
 ## Add Miner to a Regtest Network <a name="miner"></a>
 1. download the  Bitcoin CPU miner `https://github.com/pooler/cpuminer`
 - Download a release version by clicking the `Downloads` link, which bring you to SOURCEFORGE website. Version 2.5.0 works on Mac OS High Sierra.
