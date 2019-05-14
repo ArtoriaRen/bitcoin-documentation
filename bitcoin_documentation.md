@@ -160,9 +160,32 @@ int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowT
 ```
 The two parameters can be set in `src/chainparams.cpp`.
 
-## Test
-### `src/pow_tests.cpp`
-test pow.
+## `cpuminer` Source Code
+In the `cpumier.c`, miner thread scan hashes. If a valid hash is found, the thread submit the result to the `workio` thread, who submit the solution to bitcoin via JSON-RPC in function `workio_submit_work()`.
+### Structure of `work.data`
+0: version
+
+1~8: previous header hash
+
+9~16: merkle root
+
+17: time
+
+18: nBits
+
+19: nonce
+
+Check with line 1090 around in file `cpuminer.c`. 
+
+### `submit_upstream_work()`
+This is called in `workio_submit_work()`. It checks if the previous hash has changed. This funtion may cause the bitcoin server to receive wrong data if the `cpuminer` program and the `bitcoind` program use different endianness. The line 
+```c
+be32enc(work->data + i, work->data[i]);
+```
+arrange bits in big endian, but the `bitcoind` on my machine uses little endian.
+
+This function call `bitcoind`'s `submitblock` JSON-PRC API.
+
 
 ## Add Miner to a Regtest Network <a name="miner"></a>
 1. download the  Bitcoin CPU miner `https://github.com/pooler/cpuminer`
