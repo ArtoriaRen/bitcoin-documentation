@@ -177,6 +177,9 @@ In the `cpumier.c`, miner thread scan hashes. If a valid hash is found, the thre
 
 Check with line 1090 around in file `cpuminer.c`. 
 
+### `get_upstream_work()`
+call `getblocktemplate` JSON RPC.
+
 ### `submit_upstream_work()`
 This is called in `workio_submit_work()`. It checks if the previous hash has changed. This funtion may cause the bitcoin server to receive wrong data if the `cpuminer` program and the `bitcoind` program use different endianness. The line 
 ```c
@@ -244,7 +247,7 @@ The address will be used to receive payoff during mining.
 4. run miner process
 Change dir to the root of cpu-miner, then start a  miner process with only one thread:
 ```bash
-./minerd --url=127.0.0.1:8331  --user=l27ren --pass=UofW2016  --debug --coinbase-addr=2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF -a sha256d -t 1
+./minerd --url=127.0.0.1:8331  --user=rpcuser --pass=rpcpass --debug -a sha256d -t 1 --coinbase-addr=2Mz36kRLMjVu2VkjdU8mnqAxxLoYuuGr6nF
 ```
 Note that `cpuminer` require the `bitcoind` to connect to at least one peer. Otherwise `cpuminer`  will report http error 500, and `bitcoind debug.log` will report `tor: Error connecting to Tor contril socket; tor: Not connected to Tor control port 127.0.0.1:9501, ...` 
 Check the balance again, and you should see an increase. 
