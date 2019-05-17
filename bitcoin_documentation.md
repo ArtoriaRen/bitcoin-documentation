@@ -254,3 +254,6 @@ Check the balance again, and you should see an increase.
 Check mining info again, and you should find the `networkhashps` has increased. 
 Reference to [Niraj Blog](http://nirajkr.com/bitcoin/solo-cpu-mining-for-bitcoin-in-regtest-mode/)
 
+## Personal Modification to Bitcoin Core
+1. Add a sleep time after a nonce increment
+The `generate` and `generatetoaddress` rpc now have one more optional argument which specifies how long the process should sleep after trying a nonce. Thisi argument effectively adjusts hash rate.
