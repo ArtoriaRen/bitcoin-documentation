@@ -158,9 +158,13 @@ In `consensus/params.h`,
 int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
 ```
 The two parameters can be set in `src/chainparams.cpp`.
+`nPowTargetSpaceing` is the average block interval in seconds. If its value is set to 1 minute, 11 forks happen during 100 blocks in our experiment.
 
 ### Immature Balance and Block Count Mined by a Miner
 The `getwalletinfo` RPC implemented in file `src/wallet/rpcwallet.cpp` give info about immature balance (comfirmed by 0 blocks). If we do not simulate transactions, each block only contains a coinbase transaction and thus the `txcount` value equals the number of blocks mined by the miner.
+
+### The number of forks
+RPC API `getchaintips` lists all branchs (including the local best chain).
 
 ## `cpuminer` Source Code
 In the `cpumier.c`, miner thread scan hashes. If a valid hash is found, the thread submit the result to the `workio` thread, who submit the solution to bitcoin via JSON-RPC in function `workio_submit_work()`.
