@@ -5,6 +5,7 @@
 2. [Setup a Regtest Network on Local Machine](#setup-regtest-network)
 3. [Bitcoin Core Source Code Walkthrough](#code-walkthrough)
 4. [Add Miner to a Regtest Network](#miner)
+5. [Add File to Bitcoin Source Code](#add-source-file)
 ## Compile Bitcoin Core <a name="compile"></a>
 ```bash
 $ cd bitcoin
@@ -260,6 +261,27 @@ Check the balance again, and you should see an increase.
 Check mining info again, and you should find the `networkhashps` has increased. 
 Reference to [Niraj Blog](http://nirajkr.com/bitcoin/solo-cpu-mining-for-bitcoin-in-regtest-mode/)
 
-## Personal Modification to Bitcoin Core
+## Add File to Bitcoin Source Code <a name="add-source-fileminer"></a>
+### Personal Modification to Bitcoin Core
 1. Add a sleep time after a nonce increment
 The `generate` and `generatetoaddress` rpc now have one more optional argument which specifies how long the process should sleep after trying a nonce. Thisi argument effectively adjusts hash rate.
+
+### Add a Header or Source File
+Add files to the `/src` folder and change the `/src/makefile.am` to add the file into compilation.
+
+### Add IP and Port to Block Header
+In `primitives/block.h`,  class `class CBlockHeader` add a new field:
+```cpp
+CService netAddrPort;
+```
+Also, remember to change methods in class `class Block` accordingly since `class Block` inherit `class CBlockHeader`.
+
+In `miner.cpp`, `CreateNewBlock()` function, assign the _first element_ in `mapLocalHost` to `netAddrPort` 
+```cpp
+pblock->netAddrPort    = CService(mapLocalHost.begin()->first, mapLocalHost.begin()->second.nPort);
+```
+You can also assign other IP and port.
+
+In `chainparams.cpp`, do not forget to change the arguments in function call `CreateGenesisBlock()`, otherwise the block header validation may fail because header hash has changed.
+
+
