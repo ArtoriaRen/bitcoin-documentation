@@ -196,6 +196,26 @@ arrange bits in big endian, but the `bitcoind` on my machine uses little endian.
 
 This function call `bitcoind`'s `submitblock` JSON-PRC API.
 
+### Sign with a ECDSA key
+In `src/key.h`,
+```cpp
+class Ckey{
+	bool Sign();
+}
+```
+In `src/pubkey.h`
+```cpp
+class CPubKey{
+	bool Verify();
+}
+```
+
+In file `src/script/interpreter.cpp`
+```cpp
+TransactionSignatureChecter::VerifySignature();
+```
+
+
 
 ## Add Miner to a Regtest Network <a name="miner"></a>
 1. download the  Bitcoin CPU miner `https://github.com/pooler/cpuminer`
