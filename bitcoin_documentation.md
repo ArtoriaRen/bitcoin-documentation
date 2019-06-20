@@ -215,6 +215,21 @@ In file `src/script/interpreter.cpp`
 TransactionSignatureChecter::VerifySignature();
 ```
 
+### Peer Node Management
+In file `src/net.h`
+```cpp
+class CConnman{}
+```
+In line 433, global peer management data structure is declared:
+```cpp
+extern std::unique_ptr<CConnman> g_connman;
+```
+`g_connman` is defined in the file `src/init.cpp`
+
+
+`CConnman::PushMessage` push message to `vSendMsg` double ended queue.
+
+In `net_processing.cpp`, `PeerLogicValidation::ProcessMessages()` process messages according to the protocol and should not be used in pbft.
 
 
 ## Add Miner to a Regtest Network <a name="miner"></a>
