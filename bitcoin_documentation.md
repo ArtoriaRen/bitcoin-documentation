@@ -227,11 +227,6 @@ extern std::unique_ptr<CConnman> g_connman;
 `g_connman` is defined in the file `src/init.cpp`
 
 
-`CConnman::PushMessage` push message to `vSendMsg` double ended queue.
-
-In `net_processing.cpp`, `PeerLogicValidation::ProcessMessages()` process messages according to the protocol and should not be used in pbft.
-
-
 ## Add Miner to a Regtest Network <a name="miner"></a>
 1. download the  Bitcoin CPU miner `https://github.com/pooler/cpuminer`
 - Download a release version by clicking the `Downloads` link, which bring you to SOURCEFORGE website. Version 2.5.0 works on Mac OS High Sierra.
@@ -302,7 +297,7 @@ Reference to [Niraj Blog](http://nirajkr.com/bitcoin/solo-cpu-mining-for-bitcoin
 The `generate` and `generatetoaddress` rpc now have one more optional argument which specifies how long the process should sleep after trying a nonce. Thisi argument effectively adjusts hash rate.
 
 ### Add a Header or Source File
-Add files to the `/src` folder and change the `/src/makefile.am` to add the file into compilation.
+Add files to the `/src` folder and change the `/src/Makefile.am` to add the file into compilation. re-run `./configure --without-gui && make`.
 
 ### Add IP and Port to Block Header
 In `primitives/block.h`,  class `class CBlockHeader` add a new field:
